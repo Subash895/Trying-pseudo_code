@@ -97,44 +97,163 @@ inserting the value
 
  ______________________________________________________________
 1)Create a query to fetch data from External candidates which checks if there is null value in the field cstate
+
     select * from externalcandidate
         where cstate is NULL;
     checks
         is null is used, not = null
 
 2) Create a query to fetch data which checks if there are entries in the field ccity
-    select * from externalcandidate
+
+    select * from ExternalCandidate
+    where cCity is not null;
+
 3) Create a query which fetches data from external candidate who stay in cities
 like Norton,Seattle,Columbus and sitetscore greater than 70
+
+    select *
+    from ExternalCandidate
+    where cCity in ('norton','seattle','columbus')
+    and  siTestScore > 70;
 
 4)Create a query to fetch vfirstname,vlastname,ccity,cstate from externalcandidate of those candidates who stay in cities which start with C,Dor E and cstate which starts with A , B or c
 wherever size is not mentioned for a field you can imagine size
 
+    select vfirstname, vlastname, ccity, cState
+    from ExternalCandidate
+    where cCity like 'c%'
+    or cCity like 'A%'
+    and (cState like 'a%'
+        or cState like 'b%'
+        or cState like 'c%'
+        );
+
 5)Create a Table called Supplier with Supid varchar(10) which is of primary key
 and other fields include SupplierName,SupplierAddress , SupplierPhone,SupplierMail
 all varchar types
+
 Insert sample records atlest 5
+    create table Supplier(
+    SupId varchar(10) primary key,
+    SupplierName varchar(50),
+    SupplierAddress varchar(50),
+    SupplierPhone varchar(20),
+    SupplierMail varchar(50)
+    );
+    -- insert to suppliers
+insert into Supplier values
+    ('S001','ABC Traders','New York','9991112222','abc@mail.com'),
+    ('S002','Global Supplies','Seattle','8882223333','global@mail.com'),
+    ('S003','Prime Mart','Chicago','7773334444','prime@mail.com'),
+    ('S004','NextGen Corp','Boston','6664445555','next@mail.com'),
+    ('S005','United Goods','Dallas','5556667777','united@mail.com');
+
+select * from Supplier;
+
 6) Create a Table Products with ProductId varchar type which is primary key and ProductName,ProductDescription,Product Category  all of varchar type aand price which is of Int type
 
 Create another table Customer with CustId varchar primary key ,CustAddr,Cust phone all varchar type and ProductId which should be foreign key referencing to productid of Products table and also the table should include QtyPurch and Value in int type
 
 Create Primary key foreign key relationship between these tables and insert sample records atlest 5 and check the referential integrity
 
+    -- CREATING Product table
+create table Products(
+    ProductId varchar(10) primary key,
+    ProductName varchar(50),
+    ProductDescription varchar(100),
+    ProductCategory varchar(50),
+    Price int
+    );
+    show tables;
+    -- INSERT
+insert into Products
+    values
+    ('P001','Laptop','Gaming Laptop','Electronics',70000),
+    ('P002','Mobile','Smart Phone','Electronics',20000),
+    ('P003','Table','Wooden Table','Furniture',8000),
+    ('P004','Chair','Office Chair','Furniture',5000),
+    ('P005','Watch','Digital Watch','Accessories',3000);
+    select * from Products;
+    -- CREATE Customer foreign key
+create table Customer(
+    CustId varchar(10) primary key,
+    CustAddr varchar(50),
+    CustPhone varchar(20),
+    ProductId varchar(10),
+    QtyPurch int,
+    Value int,
+    foreign key (ProductId) references Products(ProductId)
+    );
+    -- INSERT
+insert into Customer
+    values
+    ('C001','Delhi','9999999999','P001',1,70000),
+    ('C002','Mumbai','8888888888','P002',2,40000),
+    ('C003','Chennai','7777777777','P003',1,8000),
+    ('C004','Kolkata','6666666666','P004',3,15000),
+    ('C005','Hyderabad','5555555555','P005',2,6000);
+    select * from Customer;
+
 7) Create a query to fetch the data from the external candidate for those candidates whose sitestscore is between 60 and 80
 
+    select * from ExternalCandidate
+    where siTestScore between 60 and 80 ;
+
 8) Create q query to fetch the data of those external candidates whose firstname starts with any character and last character should end with y or a
+
+    select *
+    from ExternalCandidate
+    where vLastName like '%y'
+    or vLastName like '%a';
 
 9) Create query to fetch the firstname and lastname along with the sitestscore , firstname and lastname should be concatenated with . as separator and original sitestscore should be shown along with the gracemarks incremented score by 10%
 ie
 vfirstname.vlastname sitestscore sitestscore+10%
 
+    select
+        concat(vFirstName,' ',vLastName) as FullName,
+        siTestScore,
+        siTestScore+(siTestScore * 0.10) as increasedscore
+        from ExternalCandidate;
+
 10) Create query which finds the Externalcandidates whose dateofapplication is not greater than 2 yrs old
-
+    select *
+    from ExternalCandidate
+    where dateOfApplication >= date_sub(curdate(),interval 2 year );
+    /* select *
+    from ExternalCandidate
+    where dateOfApplication <= date_sub(curdate(),interval 2 year ); */
 11) Create query to fetch the data from external candidate which shows all candidates details of Male candidates
-
+    select *
+    from ExternalCandidate
+    where gender ='male ';
 12) Create query to fetch data from external candidate which shows all candidates who are referred through Agencies(Hint : whose cagency code has values - not null)
-
+    select  *
+    from  ExternalCandidate
+    where cAgencyCode is not null;
 13)Create query to find the average of MCollection of those movies whose category starts with D or C
+    -- CREATE Movie tables
+
+create table Movies(
+    MovieId varchar(10) primary key,
+    MovieName varchar(50),
+    Category varchar(50),
+    MCollection int
+    );
+    -- INSERT movie table
+insert into Movies values
+    ('M001','Dark Knight','Drama',500),
+    ('M002','Comedy Night','Comedy',300),
+    ('M003','Action Hero','Action',400),
+    ('M004','Dream Story','Drama',450),
+    ('M005','Crazy Fun','Comedy',350);
+    select *
+    from movies;
+-- ______________________________________________
+    select avg(Mcollection) as averagecollection
+    from movies
+    where category like 'd%'
+    or category like 'c%';
 
 14) Create a table fo the following format
 
@@ -145,17 +264,82 @@ B002    HJ    2333  Comedy   Shelly
 B003    TY    3440  Tragedy  Shakespeare
 include some more records for categories like Drama,Comedy,Tragedy and scifi
 
+create table Books(
+    BookId varchar(10) primary key,
+    Title varchar(50),
+    Price int,
+    Category varchar(50),
+    Author varchar(50)
+    );
+
+    -- Insert Sample Records
+
+insert into Books values
+    ('B001','NB',1234,'SciFi','Keats'),
+    ('B002','HJ',2333,'Comedy','Shelly'),
+    ('B003','TY',3440,'Tragedy','Shakespeare'),
+    ('B004','DR1',2000,'Drama','Arthur'),
+    ('B005','CM1',1500,'Comedy','John'),
+    ('B006','SC1',4000,'SciFi','Clark');
+
 15) Create a query which fetches all data from the above Table and finds the min,max and average price of the books
 
+    select
+        min(Price) as MinimumPrice,
+        max(Price) as MaximumPrice,
+        avg(Price) as AveragePrice
+    from Books;
 16) Create a query which fetches all data from the above Table and finds the min,max and average price of the books based on the category(Show only category based aggragates without individual record info)Hint: use group by
 
+    select
+        Category,
+        min(Price) as MinimumPrice,
+        max(Price) as MaximumPrice,
+        avg(Price) as AveragePrice
+    from Books
+    group by Category;
 17) In the previous question , generate the same query which fetches the above said data only for those Drama and Comedy
 
+    select
+        Category,
+        min(Price) as MinimumPrice,
+        max(Price) as MaximumPrice,
+        avg(Price) as AveragePrice
+    from Books
+    where Category in ('Drama','Comedy')
+    group by Category;
 18)Create a query which fetches all data from the above Table and finds the min,max and average price of the books based on the category(show individual records as well as the aggregate results(Hint : use compute by)
 
+    select
+        Category,
+        BookId,
+        Title,
+        Price,
+        min(Price) over (partition by Category) as MinPrice,
+        max(Price) over (partition by Category) as MaxPrice,
+        avg(Price) over (partition by Category) as AvgPrice
+    from Books;
 19) Using substring function find the first 5 characters of the vfirstname of external candidates and also display the ascii values of these strings
 
+    select
+        vFirstName,
+        substring(vFirstName,1,5) as FirstFiveChars,
+        ascii(substring(vFirstName,1,1)) as AsciiValue
+    from ExternalCandidate;
 20) Using Date functions fetch the external candidates details like vfirstname,vlastname and age and display the details in ascending values wrt the age
 if age is not mentioned calculate the age wrt yrs using date functions
+
+    select
+        vFirstName,
+        vLastName,
+        timestampdiff(year, dateOfBirth, curdate()) as Age
+    from ExternalCandidate
+    order by Age asc;
 21) Create a query to display the vfirstname and vlastname along with dateofapplication also show the dateof application's added with 2 years
 
+    select
+        vFirstName,
+        vLastName,
+        dateOfApplication,
+        date_add(dateOfApplication, interval 2 year) as AfterTwoYears
+    from ExternalCandidate;

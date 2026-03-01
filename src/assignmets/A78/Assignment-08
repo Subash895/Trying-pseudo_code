@@ -1,0 +1,143 @@
+Assignment-08
+
+1.	Define SQL Server Instance.
+A). An sql server instances is a separate installation of sql server that runs as its own servce
+    and manages its own databases, security and configuration settings
+    Simple : one computer can run multiple sql server instances
+    each instances works independently
+
+2.	What does the master database contain?
+A). The master database contains
+        sys level information
+        login accounts
+        configuration settings
+        information about all databases
+        sys stored procedures
+    # if master is damaged sql server wont start properly.
+
+3.	What is the model database’s function?
+A). The model database acts as a tenplate
+    whenever a new satabases is creates , sql server copies structure from the model database
+    if you create table in model every new database will automatically have them .
+4.	What is the use of tempdb?
+A). it is used to store tempory data
+        temporary tables
+        sorting operatons
+        grouping
+        intermediate query results
+        temporary objects
+    it is recreeated every time sql server restarts
+5.	Which of the following statements are true about a normal subquery
+    a.	The inner query executes first
+    b.	The execution begins with the outer query
+    c.	The result of the inner query is used by the outer query
+    d.	The inner query is a complete query in its own right
+A). A, D, C
+6)  Create a query to fetch the data from ExternalCandidate table which shows the details of all the candidates whose sitestscore is lesser than the average sitestscore of all the External candidates(Use subquery)
+A). Select * from externalCandiate where siTestscore< ( select avg (siTestscore) from externalCandidate );
+7)  Create a query to fetch the data from External Candidate which shows the details of all candidates whose cstate is not in Kansas,Virginia,Georgia(Use Sub query)
+A). select *
+    from externalcandidate
+    where cstate not in ('kansas','virginia','georgia');
+
+7.B)Create sample Supplier table SupId,SupName,SupPhone - Orders table Orderid,OrderDate,Supplierid
+A). create table Supplier(
+        SupId varchar(10) primary key,
+        SupName varchar(50),
+        SupPhone varchar(20)
+    );
+    create table Orders(
+        OrderId varchar(10) primary key,
+        OrderDate date,
+        SupplierId varchar(10),
+        foreign key (SupplierId) references Supplier(SupId)
+    );
+8)  Create a query to fetch the data joining Supplier table and Orders table (innerjoin)
+A). select *
+    from Supplier s
+    inner join Orders o
+    on s.SupId = o.SupplierId;
+9)  Create a query to fetch the data joining Supplier table and Orders table , all data from Customer table should be displayed and only related records from Orders table to be displayed(Use left outer join)
+A). select *
+    from Supplier s
+    left join Orders o
+    on s.SupId = o.SupplierId;
+10) Create a query to fetch the data joining Customer table and Orders table all data from Orders table and related from Customer table
+(HInt:use Right outer join
+A). select *
+    from Supplier s
+    right join Orders o
+    on s.SupId = o.SupplierId;
+11) Create a query to fetch the data from Department for those departments which have the Department Heads name starting with M
+A). select *
+    from Department
+    where DeptHeadName like 'M%';
+12) Create a query which fetches the data about the PositionDescription from Position table for all those employees whose candidature was referred by Agencies
+(hint : use subqueries-> Use Position ,Externalcandidate and Employee table HR DB)
+A). select *
+    from Position
+    where PositionId in
+    (
+        select PositionId
+        from Employee
+        where CandidateId in
+        (
+            select CandidateId
+            from ExternalCandidate
+            where cAgencyCode is not null
+        )
+    );
+13) Create a query to fetch the data of all employees whose position has Currentstrength greater than 50
+(Use Position & Employee Table -HR DB)  use subquery
+A). select *
+    from Employee
+    where PositionId in
+    (
+        select PositionId
+        from Position
+        where CurrentStrength > 50
+    );
+14) Create a query to fetch the position description details  for  the Candidates(ExternalCandidates) who are referred by the agencies(cagencycode)
+(tables:position,external candidate,employee)
+A). select p.PositionDescription
+    from Position p
+    where p.PositionId in
+    (
+        select e.PositionId
+        from Employee e
+        where e.CandidateId in
+        (
+            select CandidateId
+            from ExternalCandidate
+            where cAgencyCode is not null
+        )
+    );
+15) Create query to fetch the employee skills for those external candidates who are referred by Agencies(Use EmployeeSkill table along with Employee,Ext Candidate)
+and Create query to fetch the employee skills for those candidates who are not referred by Agencies.
+A). select *
+    from EmployeeSkill
+    where EmployeeId in
+    (
+        select EmployeeId
+        from Employee
+        where CandidateId in
+        (
+            select CandidateId
+            from ExternalCandidate
+            where cAgencyCode is not null
+        )
+    );
+---------------------------------------------  not referred
+     select *
+     from EmployeeSkill
+     where EmployeeId in
+     (
+         select EmployeeId
+         from Employee
+         where CandidateId in
+         (
+             select CandidateId
+             from ExternalCandidate
+             where cAgencyCode is null
+         )
+     );

@@ -243,4 +243,4 @@ select
     dateOfApplication,
     date_add(dateOfApplication, interval 2 year) as AfterTwoYears
 from ExternalCandidate;
--- ____________________________________-
+-- ____________________________________

@@ -1,0 +1,16 @@
+Funchtion hasCycle (head)
+    if head == null:
+        return false
+
+    slow =head
+    fast=head
+    while fast!=null && fasrt.next!=null
+        slow=slow.next
+        fast=fast.next.next
+
+        if slow == fast
+            return true
+    return false
+
+time complexity O(n)
+space complexity O(1)

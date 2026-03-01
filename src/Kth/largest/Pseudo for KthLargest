@@ -1,0 +1,85 @@
+#unsorted arr better then sorting
+_____________________________________
+Sorting takes O(n log n).
+But we only need ONE element.
+
+So QuickSelect avoids sorting entire array.
+_________________________________________________
+    @Quick sort
+function quickSelect(arr, left, right, targetIndex)://left : 0 || right : n-1
+
+    if left == right:
+        return arr[left]
+
+    pivotIndex = partition(arr, left, right)
+
+    if pivotIndex == targetIndex:
+        return arr[pivotIndex]
+
+    else if pivotIndex < targetIndex:
+        return quickSelect(arr, pivotIndex + 1, right, targetIndex)
+
+    else:
+        return quickSelect(arr, left, pivotIndex - 1, targetIndex)
+______________________________________________________
+Partition picks a pivot.
+
+It rearranges array like this:
+
+All smaller numbers → left
+Pivot in correct sorted position
+All larger numbers → right
+
+Important:
+
+After partition, pivot is at its correct final sorted index.
+
+Even though array is not fully sorted.
+
+That is the key idea.
+--------------------------
+Example:
+
+Array = [3, 1, 5, 2, 4]
+Pivot = 4
+
+After partition:
+
+[3, 1, 2, 4, 5]
+
+Now pivot 4 is in correct position (index 3).
+
+Left side smaller
+Right side larger
+
+Now if target index = 3
+We are done.
+
+If target index > 3
+Search right side only.
+
+If target index < 3
+Search left side only.
+
+We ignore half.
+
+That’s why it becomes fast.
+_____________________________________________________________
+    @partition function
+function partition(arr, left, right):
+
+    pivot = arr[right]
+    i = left
+
+    for j from left to right-1:
+        if arr[j] <= pivot:
+            swap(arr[i], arr[j])
+            i++
+
+    swap(arr[i], arr[right])
+    return i
+________________________________________________________
+Time Complexity
+
+Average → O(n)
+Worst → O(n²)

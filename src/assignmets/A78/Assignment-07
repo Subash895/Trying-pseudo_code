@@ -1,0 +1,161 @@
+Assignment Day 07
+
+1) Explain the types of Entities we have in Record Based Logical Model
+A) Entity are real world object like eg: books Students
+	There are three types of entity
+		1.Strong entity
+		2.Weak entity
+		3.Associative entity
+	1.Strong
+	    has it own entity
+	    exist indenpendently
+	        ex: studentId
+    2.Weak
+        Does not have complete primary key
+        depends on strong entity
+            ex: orderItem
+    3.Associative entity
+        Used to resolve many to many relation
+        contain forign key from two entities
+            ex: studentcourse(studId, CourseId)
+
+
+
+
+2) Explaint the different models of Record Based Logical Models
+A) there are 3 main models
+        1. Hierachical Model
+        2. Network model
+        3. Reletional model
+    1. hierachical
+        tree structure
+        one parent -> many parent
+            ex: Company-> depertment -> employee
+            limitation: No many  to many relation
+    2. Network Model
+        Graph structure
+        many to many allow
+        More flexible than hierarchical
+    3. Relation
+        * Data strone in tables
+        * Uses primary key and joreign key
+        * Most widely used model (mySql, Orecle, Sql server )
+
+3)Explain different types of Entity relationships
+A) (1:1) (1:N) (M:N)
+    one to one
+        one record in A related to one record in B
+            ex Person-> passport
+    one to many
+        one record in A related to many in B
+            ex person -> Banks
+    many to many
+        many in A related to many in B
+            ex student -> course
+
+-------------------------------------------------------------------------------
+Part2
+A)
+Create a table External Candidate with the following fields
+CandidateName,
+CandidateAddress
+CandidateCity
+CandidatePhone
+CandidateeMail
+siTestScore
+use appropriate datatypes and insert sample records.
+_____________________________________________
+first, Creating ExternalCandidate Table
+
+    create table ExternalCandidata(
+    candidadateId int primary key auto_increment,
+    vFirstName varchar(50),
+    vLastName VarChar(50),
+    candidateAddress varchar(50),
+    cCity varchar(50),
+    cState varchar(50),
+    CandidatePhone varchar(50),
+    CandidateEmail varchar(50),
+    Sitecore int,
+    gender varchar(50),
+    cAgentcode varchar(50),
+    dateofapplication date ,
+    dateofbirth date
+    );
+___________________________________________________
+inserting the value
+
+    insert into Externalcandidate
+    (vFirstName, vLastName, CandidateAddress, cCity, cState, CandidatePhone, CandidateEmail, siTestScore, Gender, cAgencyCode, DateOfApplication, DateOfBirth)
+    VALUES
+    ('John','Carter','Street 1','Seattle','Arizona','9999999999','john@mail.com
+    ',75,'Male','AG01','2023-05-01','1998-04-01'),
+    ('Emily','Daisy','Street 2','Norton','California','8888888888','emily@mail.com
+    ',65,'Female',NULL,'2022-03-10','2000-02-15'),
+    ('Robert','Lee','Street 3','Columbus','Alaska','7777777777','robert@mail.com
+    ',82,'Male','AG02','2021-06-20','1995-09-09');
+
+ ______________________________________________________________
+1)Create a query to fetch data from External candidates which checks if there is null value in the field cstate
+    select * from externalcandidate
+        where cstate is NULL;
+    checks
+        is null is used, not = null
+
+2) Create a query to fetch data which checks if there are entries in the field ccity
+    select * from externalcandidate
+3) Create a query which fetches data from external candidate who stay in cities
+like Norton,Seattle,Columbus and sitetscore greater than 70
+
+4)Create a query to fetch vfirstname,vlastname,ccity,cstate from externalcandidate of those candidates who stay in cities which start with C,Dor E and cstate which starts with A , B or c
+wherever size is not mentioned for a field you can imagine size
+
+5)Create a Table called Supplier with Supid varchar(10) which is of primary key
+and other fields include SupplierName,SupplierAddress , SupplierPhone,SupplierMail
+all varchar types
+Insert sample records atlest 5
+6) Create a Table Products with ProductId varchar type which is primary key and ProductName,ProductDescription,Product Category  all of varchar type aand price which is of Int type
+
+Create another table Customer with CustId varchar primary key ,CustAddr,Cust phone all varchar type and ProductId which should be foreign key referencing to productid of Products table and also the table should include QtyPurch and Value in int type
+
+Create Primary key foreign key relationship between these tables and insert sample records atlest 5 and check the referential integrity
+
+7) Create a query to fetch the data from the external candidate for those candidates whose sitestscore is between 60 and 80
+
+8) Create q query to fetch the data of those external candidates whose firstname starts with any character and last character should end with y or a
+
+9) Create query to fetch the firstname and lastname along with the sitestscore , firstname and lastname should be concatenated with . as separator and original sitestscore should be shown along with the gracemarks incremented score by 10%
+ie
+vfirstname.vlastname sitestscore sitestscore+10%
+
+10) Create query which finds the Externalcandidates whose dateofapplication is not greater than 2 yrs old
+
+11) Create query to fetch the data from external candidate which shows all candidates details of Male candidates
+
+12) Create query to fetch data from external candidate which shows all candidates who are referred through Agencies(Hint : whose cagency code has values - not null)
+
+13)Create query to find the average of MCollection of those movies whose category starts with D or C
+
+14) Create a table fo the following format
+
+Books
+BookId Title Price Category Author
+B001    NB   1234  SciFi        Keats
+B002    HJ    2333  Comedy   Shelly
+B003    TY    3440  Tragedy  Shakespeare
+include some more records for categories like Drama,Comedy,Tragedy and scifi
+
+15) Create a query which fetches all data from the above Table and finds the min,max and average price of the books
+
+16) Create a query which fetches all data from the above Table and finds the min,max and average price of the books based on the category(Show only category based aggragates without individual record info)Hint: use group by
+
+17) In the previous question , generate the same query which fetches the above said data only for those Drama and Comedy
+
+18)Create a query which fetches all data from the above Table and finds the min,max and average price of the books based on the category(show individual records as well as the aggregate results(Hint : use compute by)
+
+19) Using substring function find the first 5 characters of the vfirstname of external candidates and also display the ascii values of these strings
+
+20) Using Date functions fetch the external candidates details like vfirstname,vlastname and age and display the details in ascending values wrt the age
+if age is not mentioned calculate the age wrt yrs using date functions
+21) Create a query to display the vfirstname and vlastname along with dateofapplication also show the dateof application's added with 2 years
+

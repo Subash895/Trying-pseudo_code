@@ -32,6 +32,7 @@ A). it is used to store tempory data
     b.	The execution begins with the outer query
     c.	The result of the inner query is used by the outer query
     d.	The inner query is a complete query in its own right
+
 A). A, D, C
 6)  Create a query to fetch the data from ExternalCandidate table which shows the details of all the candidates whose sitestscore is lesser than the average sitestscore of all the External candidates(Use subquery)
 A). Select * from externalCandiate where siTestscore< ( select avg (siTestscore) from externalCandidate );
